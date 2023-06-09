@@ -125,40 +125,15 @@ if(!isset($_SESSION['cart_p_id'])) {
                         </tr>
                         <?php endfor; ?>           
                         <tr>
-                            <th colspan="7" class="total-text"><?php echo LANG_VALUE_81; ?></th>
-                            <th class="total-amount"><?php echo LANG_VALUE_1; ?><?php echo $table_total_price; ?></th>
-                        </tr>
-                        <?php
-                        $statement = $pdo->prepare("SELECT * FROM shipping_cost WHERE country_id=?");
-                        $statement->execute(array($_SESSION['customer']['cust_country']));
-                        $total = $statement->rowCount();
-                        if($total) {
-                            $result = $statement->fetchAll(PDO::FETCH_ASSOC);
-                            foreach ($result as $row) {
-                                $shipping_cost = $row['amount'];
-                            }
-                        } else {
-                            $statement = $pdo->prepare("SELECT * FROM shipping_cost_all WHERE sca_id=1");
-                            $statement->execute();
-                            $result = $statement->fetchAll(PDO::FETCH_ASSOC);
-                            foreach ($result as $row) {
-                                $shipping_cost = $row['amount'];
-                            }
-                        }                        
-                        ?>
-                        <tr>
-                            <td colspan="7" class="total-text"><?php echo LANG_VALUE_84; ?></td>
-                            <td class="total-amount"><?php echo LANG_VALUE_1; ?><?php echo $shipping_cost; ?></td>
-                        </tr>
-                        <tr>
                             <th colspan="7" class="total-text"><?php echo LANG_VALUE_82; ?></th>
                             <th class="total-amount">
                                 <?php
-                                $final_total = $table_total_price+$shipping_cost;
+                                $final_total = $table_total_price;
                                 ?>
                                 <?php echo LANG_VALUE_1; ?><?php echo $final_total; ?>
                             </th>
                         </tr>
+
                     </table> 
                 </div>
 
@@ -225,64 +200,51 @@ if(!isset($_SESSION['cart_p_id'])) {
                 <h3 class="special"><?php echo LANG_VALUE_33; ?></h3>
                 <div class="row">
                     
-                    	<?php
-		                $checkout_access = 1;
-		                if(
-		                    ($_SESSION['customer']['cust_s_name']=='') ||
-		                    ($_SESSION['customer']['cust_s_phone']=='') ||
-		                    ($_SESSION['customer']['cust_s_country']=='') ||
-		                    ($_SESSION['customer']['cust_s_address']=='') ||
-		                    ($_SESSION['customer']['cust_s_city']=='') ||
-		                    ($_SESSION['customer']['cust_s_state']=='') ||
-		                    ($_SESSION['customer']['cust_s_zip']=='')
-		                ) {
-		                    $checkout_access = 0;
-		                }
-		                ?>
-		                <?php if($checkout_access == 0): ?>
-		                	<div class="col-md-12">
-				                <div style="color:red;font-size:22px;margin-bottom:50px;">
-			                        You must have to fill up all the billing and shipping information from your dashboard panel in order to checkout the order. Please fill up the information going to <a href="customer-billing-shipping-update.php" style="color:red;text-decoration:underline;">this link</a>.
-			                    </div>
-	                    	</div>
-	                	<?php else: ?>
-		                	<div class="col-md-4">
-		                		
-	                            <div class="row">
-
-	                                <div class="col-md-12 form-group">
-	                                    <label for=""><?php echo LANG_VALUE_34; ?> *</label>
-	                                    <select name="payment_method" class="form-control select2" id="advFieldsStatus">
-	                                        <option value=""><?php echo LANG_VALUE_35; ?></option>
-	                                        <option value="eWallet"><?php echo LANG_VALUE_36; ?></option>
-	                                        <option value="Bank Transfer"><?php echo LANG_VALUE_38; ?></option>
+                <?php
+                $checkout_access = 1;
+                if (
+                    ($_SESSION['customer']['cust_s_name'] == '') ||
+                    ($_SESSION['customer']['cust_s_phone'] == '') ||
+                    ($_SESSION['customer']['cust_s_country'] == '') ||
+                    ($_SESSION['customer']['cust_s_address'] == '') ||
+                    ($_SESSION['customer']['cust_s_city'] == '') ||
+                    ($_SESSION['customer']['cust_s_state'] == '') ||
+                    ($_SESSION['customer']['cust_s_zip'] == '')
+                ) {
+                    $checkout_access = 0;
+                }
+                ?>
+		                <?php if ($checkout_access == 0): ?>
+                        <div class="col-md-12">
+                            <div style="color: red; font-size: 22px; margin-bottom: 50px;">
+                                Untuk melanjutkan pesanan, harap lengkapi semua informasi pengiriman yang diperlukan di panel dasbor Anda. Silakan berikan detail yang diperlukan melalui <a href="customer-billing-shipping-update.php" style="color: red; text-decoration: underline;">tautan ini</a>.
+                            </div>
+                        </div>
+                    <?php else: ?>
+                        <div class="col-md-4">
+                            <div class="row">
+                                <form action="payment_init.php" method="post" id="payment_Form">
+                                    <input type="hidden" name="amount" value="<?php echo $final_total; ?>">
+                                    
+                                    <div class="col-md-12 form-group">
+                                        <label for=""><?php echo LANG_VALUE_34; ?> *</label>
+                                        <select name="payment_method" class="form-control select2" id="advFieldsStatus" required>
+                                            <option value=""><?php echo LANG_VALUE_35; ?></option>
+                                            <option value="eWallet"><?php echo LANG_VALUE_36; ?></option>
+                                            <option value="Bank Transfer"><?php echo LANG_VALUE_38; ?></option>
                                             <option value="Credit Card"><?php echo LANG_VALUE_164; ?></option>
                                             <option value="Minimarket"><?php echo LANG_VALUE_165; ?></option>
                                             <option value="Cash On Delivery"><?php echo LANG_VALUE_166; ?></option>
-                                            
-	                                    </select>
-	                                </div>
+                                        </select>
+                                    </div>
 
-
-
-                                    <form action="payment_init.php" method="post" id="payment_Form">
-                                        <input type="hidden" name="amount" value="<?php echo $final_total; ?>">
-                                        
-                                        <div class="col-md-12 form-group">
-                                            <label for=""><?php echo LANG_VALUE_44; ?> <br><span style="font-size:12px;font-weight:normal;">(<?php echo LANG_VALUE_45; ?>)</span></label>
-                                            <textarea name="transaction_info" class="form-control" cols="30" rows="10"></textarea>
-                                        </div>
-                                        <div class="col-md-12 form-group">
-    <input type="submit" class="btn btn-primary" value="<?php echo LANG_VALUE_46; ?>" name="form3">
-</div>
-</form>
-
-	                                
-	                            </div>
-		                            
-		                        
-		                    </div>
-		                <?php endif; ?>
+                                    <div class="col-md-12 form-group">
+                                        <input type="submit" class="btn btn-primary" value="<?php echo LANG_VALUE_46; ?>" name="form3">
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    <?php endif; ?>
                         
                 </div>
                 

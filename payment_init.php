@@ -23,7 +23,8 @@ if (!isset($_REQUEST['msg'])) {
 		$payment_date = date('Y-m-d H:i:s');
 	    $payment_id = time();
 
-	    $statement = $pdo->prepare("INSERT INTO payment (   
+	    $statement = $pdo->prepare("INSERT INTO payment (
+	                            id,
 	                            customer_id,
 	                            customer_name,
 	                            customer_email,
@@ -33,19 +34,28 @@ if (!isset($_REQUEST['msg'])) {
 	                            payment_status,
 	                            shipping_status,
 	                            payment_id
-	                        ) VALUES (?,?,?,?,?,?,?,?,?,?,?)");
+	                        ) VALUES (
+	                            NULL,
+	                            :customer_id,
+	                            :customer_name,
+	                            :customer_email,
+	                            :payment_date,
+	                            :paid_amount,
+	                            :payment_method,
+	                            :payment_status,
+	                            :shipping_status,
+	                            :payment_id
+	                        )");
 	    $statement->execute(array(
-	                            $_SESSION['customer']['cust_id'],
-	                            $_SESSION['customer']['cust_name'],
-	                            $_SESSION['customer']['cust_email'],
-	                            $payment_date,
-	                            '',
-	                            $_POST['amount'],
-	                            $_POST['payment_method'], 
-	                            'Pending',
-	                            'Pending', 
-	                            $payment_id,
-	                            $_POST['transaction_info']
+	                            ':customer_id' => $_SESSION['customer']['cust_id'],
+	                            ':customer_name' => $_SESSION['customer']['cust_name'],
+	                            ':customer_email' => $_SESSION['customer']['cust_email'],
+	                            ':payment_date' => $payment_date,
+	                            ':paid_amount' => $_POST['amount'],
+	                            ':payment_method' => $_POST['payment_method'],
+	                            ':payment_status' => 'Completed',
+	                            ':shipping_status' => 'Pending',
+	                            ':payment_id' => $payment_id
 	                        ));
 
 	    $i = 0;
@@ -95,7 +105,7 @@ if (!isset($_REQUEST['msg'])) {
 	    }
 
 	    for ($i = 1; $i <= count($arr_cart_p_name); $i++) {
-	        $statement = $pdo->prepare("INSERT INTO `order` (
+	        $statement = $pdo->prepare("INSERT INTO `order_table` (
 	                        product_id,
 	                        product_name,
 	                        size, 
@@ -137,7 +147,7 @@ if (!isset($_REQUEST['msg'])) {
 	    unset($_SESSION['cart_p_name']);
 	    unset($_SESSION['cart_p_featured_photo']);
 
-	    header('location: ../../payment_success.php');
+	    header('location: ../ppw/payment_success.php');
 	}
 }
 ?>

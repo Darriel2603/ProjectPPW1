@@ -23,7 +23,6 @@ if (!isset($_SESSION['customer'])) {
                                 <th><?php echo '#' ?></th>
                                     <th><?php echo LANG_VALUE_48; ?></th>
                                     <th><?php echo LANG_VALUE_27; ?></th>
-                                    <th><?php echo LANG_VALUE_28; ?></th>
                                     <th><?php echo LANG_VALUE_29; ?></th>
                                     <th><?php echo LANG_VALUE_30; ?></th>
                                     <th><?php echo LANG_VALUE_31; ?></th>
@@ -146,14 +145,13 @@ if (!isset($_SESSION['customer'])) {
                                                                 echo '<br>Size: '.$row1['size'];
                                                                 echo '<br>Color: '.$row1['color'];
                                                                 echo '<br>Quantity: '.$row1['quantity'];
-                                                                echo '<br>Unit Price: $'.$row1['unit_price'];
+                                                                echo '<br>Unit Price: IDR'.$row1['unit_price'];
                                                                 echo '<br><br>';
                                                             }
                                                             ?>
                                                         </td>
                                                         <td><?php echo $row['payment_date']; ?></td>
-                                                        <td><?php echo $row['txnid']; ?></td>
-                                                        <td><?php echo '$'.$row['paid_amount']; ?></td>
+                                                        <td><?php echo 'IDR'.$row['paid_amount']; ?></td>
                                                         <td><?php echo $row['payment_status']; ?></td>
                                                         <td><?php echo $row['payment_method']; ?></td>
                                                         <td><?php echo $row['payment_id']; ?></td>
