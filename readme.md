@@ -2,6 +2,9 @@ Nama Lengkap
 Darriel Markerizal
 22/494409/SV/20806
 
+**Note
+Untuk menggunakan website ini, perlu melakukan register terlebih dahulu
+
 Deskripsi Website
 Proyek akhir Praktikum Pemrograman Web yang mencakup pengembangan sebuah website e-commerce bernama CoreCommerce dinamis menggunakan PHP. Website ini dirancang untuk memberikan pengalaman berbelanja online yang nyaman dan mudah bagi pengguna.
 
