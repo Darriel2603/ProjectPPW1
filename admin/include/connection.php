@@ -6,7 +6,7 @@ date_default_timezone_set('Asia/Jakarta');
 
 $dbhost = 'localhost';
 
-$dbname = 'projectpbd';
+$dbname = 'pbd';
 
 $dbuser = 'root';
 

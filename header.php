@@ -101,9 +101,6 @@ foreach ($result as $row) {
 		$about_meta_title = $row['about_meta_title'];
 		$about_meta_keyword = $row['about_meta_keyword'];
 		$about_meta_description = $row['about_meta_description'];
-		$faq_meta_title = $row['faq_meta_title'];
-		$faq_meta_keyword = $row['faq_meta_keyword'];
-		$faq_meta_description = $row['faq_meta_description'];
 		$blog_meta_title = $row['blog_meta_title'];
 		$blog_meta_keyword = $row['blog_meta_keyword'];
 		$blog_meta_description = $row['blog_meta_description'];
@@ -133,13 +130,6 @@ foreach ($result as $row) {
 		<title><?php echo $about_meta_title; ?></title>
 		<meta name="keywords" content="<?php echo $about_meta_keyword; ?>">
 		<meta name="description" content="<?php echo $about_meta_description; ?>">
-		<?php
-	}
-	if($cur_page == 'faq.php') {
-		?>
-		<title><?php echo $faq_meta_title; ?></title>
-		<meta name="keywords" content="<?php echo $faq_meta_keyword; ?>">
-		<meta name="description" content="<?php echo $faq_meta_description; ?>">
 		<?php
 	}
 	if($cur_page == 'contact.php') {
@@ -331,7 +321,6 @@ foreach ($result as $row) {
 								$result = $statement->fetchAll(PDO::FETCH_ASSOC);		
 								foreach ($result as $row) {
 									$about_title = $row['about_title'];
-									$faq_title = $row['faq_title'];
 									$blog_title = $row['blog_title'];
 									$contact_title = $row['contact_title'];
 									$pgallery_title = $row['pgallery_title'];
@@ -339,7 +328,6 @@ foreach ($result as $row) {
 								}
 								?>
 								<li><a href="about.php"><?php echo $about_title; ?></a></li>
-								<li><a href="faq.php"><?php echo $faq_title; ?></a></li>
 								<li><a href="contact.php"><?php echo $contact_title; ?></a></li>
 							</ul>
 						</div>
